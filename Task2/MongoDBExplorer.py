@@ -2,6 +2,7 @@ from pymongo import MongoClient
 from pymongo.database import Database
 from pymongo.collection import Collection
 from typing import Optional, List
+from bson import ObjectId
 import sys
 import os
 from dotenv import load_dotenv
@@ -89,7 +90,7 @@ class MongoDBExplorer:
         doc_id = input("\nSelect Document: ").strip()
 
         try:
-            document = self.current_collection.find_one({"_id": doc_id})
+            document = self.current_collection.find_one({"_id": ObjectId(doc_id)})
 
             if document is None:
                 print(f"Document with ID '{doc_id}' not found.")
