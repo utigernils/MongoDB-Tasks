@@ -3,10 +3,15 @@ from pymongo.database import Database
 from pymongo.collection import Collection
 from typing import Optional, List
 import sys
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+
+env_connection_string = os.getenv('connection_string')
 
 class MongoDBExplorer:
-    def __init__(self, connection_string: str = "mongodb://localhost:27017/"):
+    def __init__(self, connection_string: str = env_connection_string):
         self.client: MongoClient = MongoClient(connection_string)
         self.current_db: Optional[Database] = None
         self.current_collection: Optional[Collection] = None
@@ -134,5 +139,5 @@ class MongoDBExplorer:
                 self.current_collection = None
 
 if __name__ == "__main__":
-    explorer = MongoDBExplorer("CONECTIONSTRING_HERE")
+    explorer = MongoDBExplorer()
     explorer.run()
