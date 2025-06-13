@@ -38,7 +38,7 @@ class MongoDBExplorer:
         return True
 
     def show_collections(self) -> None:
-        if not self.current_db:
+        if self.current_db is None:
             return
 
         col_names = self.current_db.list_collection_names()
@@ -54,7 +54,7 @@ class MongoDBExplorer:
             print(f" - {col}")
 
     def select_collection(self) -> bool:
-        if not self.current_db:
+        if self.current_db is None:
             return False
 
         col_name = input("\nSelect Collection: ").strip()
@@ -67,7 +67,7 @@ class MongoDBExplorer:
         return True
 
     def show_documents(self) -> None:
-        if not self.current_collection:
+        if self.current_collection is None:
             return
 
         print(f"\n{self.current_db.name}.{self.current_collection.name}")
@@ -83,7 +83,7 @@ class MongoDBExplorer:
             print(f" - {doc['_id']}")
 
     def select_document(self) -> None:
-        if not self.current_collection:
+        if self.current_collection is None:
             return
 
         doc_id = input("\nSelect Document: ").strip()
@@ -91,7 +91,7 @@ class MongoDBExplorer:
         try:
             document = self.current_collection.find_one({"_id": doc_id})
 
-            if not document:
+            if document is None:
                 print(f"Document with ID '{doc_id}' not found.")
                 input("\nPress any key to return")
                 return
@@ -110,6 +110,9 @@ class MongoDBExplorer:
     def run(self) -> None:
         while True:
             try:
+                self.current_db = None
+                self.current_collection = None
+
                 while True:
                     self.show_databases()
                     if self.select_database():
@@ -123,8 +126,6 @@ class MongoDBExplorer:
                 while True:
                     self.show_documents()
                     self.select_document()
-
-                    self.current_collection = None
                     break
 
             except KeyboardInterrupt:
@@ -135,8 +136,6 @@ class MongoDBExplorer:
             except Exception as e:
                 print(f"\nAn error occurred: {str(e)}")
                 input("Press any key to restart")
-                self.current_db = None
-                self.current_collection = None
 
 if __name__ == "__main__":
     explorer = MongoDBExplorer()
