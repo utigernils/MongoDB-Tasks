@@ -133,4 +133,6 @@ class MongoDBExplorer:
                 self.current_db = None
                 self.current_collection = None
 
-
+if __name__ == "__main__":
+    explorer = MongoDBExplorer("CONECTIONSTRING_HERE")
+    explorer.run()
