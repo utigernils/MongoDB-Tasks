@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 from pymongo import GEOSPHERE
 from datetime import datetime
-import math
 import os
 from dotenv import load_dotenv
 
